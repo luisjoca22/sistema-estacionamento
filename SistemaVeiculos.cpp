@@ -91,6 +91,30 @@ void ListarVeiculos(){
 	} 
 
 }
+void ImportarArquivo(string nome, vector<Veiculo>& VectorVeiculos) {
+    ifstream entrada(nome);
+
+    if (!entrada.is_open()) {
+        cout << "Erro ao abrir o arquivo!" << endl;
+        return;
+    }
+
+    Veiculo veiculo;
+
+    while (entrada >> veiculo.numeroTicket
+                   >> veiculo.placa
+                   >> veiculo.modelo
+                   >> veiculo.dono
+                   >> veiculo.tipo
+                   >> veiculo.horarioEntrada
+                   >> veiculo.horarioSaida
+                   >> veiculo.valorPago) {
+
+        VectorVeiculos.push_back(veiculo);
+    }
+
+    entrada.close();
+}
 
 void PrintMenu(){
 	cout << " MENU PRINCIPAL\n";
