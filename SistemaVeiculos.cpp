@@ -1,10 +1,8 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include <cstdlib>
 #include <vector>
 #include <iomanip>
-#include <random>
 
 using namespace std;
 
@@ -12,7 +10,7 @@ char menuChar;
 int menuOpt = 1;
 
 struct Veiculo{
-	string numeroTicket;
+	int numeroTicket;
 	string placa;
 	string modelo;
 	string dono;
@@ -24,22 +22,62 @@ struct Veiculo{
 
 vector <Veiculo> VectorVeiculos;
 
-string GeradorID(){
-	const string algarismos = "0123456789abcdefghijklmnopqrstuvwxyz";
-	string resultado = "";
-	
-	random_device rd;
-    mt19937 gen(rd());
-    
-    uniform_int_distribution<size_t> distrib(0, algarismos.size() - 1);
-	
-	for (int i = 0; i < 6; ++i) {
-        resultado += algarismos[distrib(gen)];
-    }
-	
-	return resultado;
+string GeradorID() {
+    static int contador = 0;
+    contador++;
+
+    stringstream ss;
+    ss << setfill('0') << setw(4) << contador;
+
+    return ss.str();
 }
 
+void ImportarArquivo(string nome, vector<Veiculo>& VectorVeiculos) {
+    ifstream entrada(nome);
+
+    if (!entrada.is_open()) {
+        cout << "Erro ao abrir o arquivo!" << endl;
+        return;
+    }
+
+    Veiculo veiculo;
+
+    while (entrada >> veiculo.numeroTicket
+                   >> veiculo.placa
+                   >> veiculo.modelo
+                   >> veiculo.dono
+                   >> veiculo.tipo
+                   >> veiculo.horarioEntrada
+                   >> veiculo.horarioSaida
+                   >> veiculo.valorPago) {
+
+        VectorVeiculos.push_back(veiculo);
+    }
+    entrada.close();
+}
+
+void ExportarVeiculos(){
+	system("clear");
+	ofstream saida ("ListaDeVeiculos.txt");
+	for(int i = 0; i < int(VectorVeiculos.size()); i++){
+		saida << VectorVeiculos[i].numeroTicket << '\n';
+		saida << VectorVeiculos[i].placa << '\n';
+		saida << VectorVeiculos[i].modelo << '\n';
+		saida << VectorVeiculos[i].dono << '\n';
+		saida << VectorVeiculos[i].tipo << '\n';
+		saida << VectorVeiculos[i].horarioEntrada << '\n';
+		//saida << VectorVeiculos[i].horarioSaida << '\n';
+		//saida << VectorVeiculos[i].valorPago << '\n';
+	}
+	cout << "Arquivo ListaDeVeiculos.txt criado!" << endl;
+}
+
+void BuscadorVeiculos(vector <int> VETOR, int tamanho, valor){
+	int inicio = 0;
+	int fim = tamanho - 1;
+
+
+}
 
 void Cadastro(){
 	
@@ -87,33 +125,7 @@ void ListarVeiculos(){
 		cout << setw(20) << "Valor Pago:"        << "R$ "
 			 << fixed << setprecision(2) << VectorVeiculos[i].valorPago << '\n';
 		cout << "=============================================\n\n";
-	
-	} 
-
-}
-void ImportarArquivo(string nome, vector<Veiculo>& VectorVeiculos) {
-    ifstream entrada(nome);
-
-    if (!entrada.is_open()) {
-        cout << "Erro ao abrir o arquivo!" << endl;
-        return;
-    }
-
-    Veiculo veiculo;
-
-    while (entrada >> veiculo.numeroTicket
-                   >> veiculo.placa
-                   >> veiculo.modelo
-                   >> veiculo.dono
-                   >> veiculo.tipo
-                   >> veiculo.horarioEntrada
-                   >> veiculo.horarioSaida
-                   >> veiculo.valorPago) {
-
-        VectorVeiculos.push_back(veiculo);
-    }
-
-    entrada.close();
+	}
 }
 
 void PrintMenu(){
@@ -124,6 +136,8 @@ void PrintMenu(){
 	cout << " [3] Buscar veiculo\n";
 	cout << " [4] Editar cadastro\n";
 	cout << " [5] Remover cadastro\n";
+	cout << " [6] Importar arquivo\n";
+	cout << " [7] Exportar arquivo\n";
 	cout << " [0] Sair\n";
 	cout << "=========================================================\n";
 	cout << " Opcao: ";
@@ -156,6 +170,12 @@ int main(){
 				break;
 			case 5:
 				cout << "Remover Cadastro" << endl;
+				break;
+			case 6:
+				cout << "Importar Arquivo" << endl;
+				break;
+			case 7:
+				ExportarVeiculos();
 				break;
 			default:
 				cout << "Opcao Invalida" << endl;
