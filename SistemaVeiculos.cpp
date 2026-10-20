@@ -3,10 +3,12 @@
 #include <string>
 #include <vector>
 #include <iomanip>
+#include <limits>
 
 using namespace std;
 
-int menuOpt = 1;
+static int contador = 0;
+
 
 struct Veiculo{
 	int numeroTicket;
@@ -22,7 +24,6 @@ struct Veiculo{
 vector <Veiculo> VectorVeiculos;
 
 int GeradorID() {
-    static int contador = 0;
     return ++contador;
 }
 
@@ -46,8 +47,11 @@ void ImportarArquivo(string nome) {
                    >> veiculo.valorPago) {
 
         VectorVeiculos.push_back(veiculo);
+        contador++;
     }
-
+	
+	cout << "\n" << "Arquivo Importado" << "\n";
+	
     entrada.close();
 }
 
@@ -70,6 +74,7 @@ void ExportarVeiculos(){
 
 
 int BuscadorVeiculos(vector <Veiculo> vetor, int tamanho, int valor){
+	system("clear");
 	int inicio = 0;
 	int fim = tamanho - 1;
 	int resultado = 0;
@@ -106,15 +111,16 @@ void Cadastro(){
 	cout << "INSIRA OS DADOS ABAIXO: \n";
 	cout << "---------------------------------------------------------\n";
 	cout << "Placa: ";
-	cin >> aux.placa;
+	cin.ignore(numeric_limits<streamsize>::max(), '\n');
+	getline(cin, aux.placa);
 	cout << "Modelo: ";
-	cin >> aux.modelo;
+	getline(cin, aux.modelo);
 	cout << "Proprietario: ";
-	cin >> aux.dono;
+	getline(cin, aux.dono);
 	cout << "Tipo do Veiculo: ";
-	cin >> aux.tipo;
+	getline(cin, aux.tipo);
 	cout << "Horario de Entrada: ";
-	cin >> aux.horarioEntrada;
+	getline(cin, aux.horarioEntrada);
 	
 	VectorVeiculos.push_back(aux);
 	
@@ -125,6 +131,9 @@ void Cadastro(){
 }
 
 void ListarVeiculos(){
+	
+	string espera;
+	
 	system("clear");
 	for(int i = 0; i < int(VectorVeiculos.size()); i++){
 		cout << "=============================================\n";
@@ -142,8 +151,10 @@ void ListarVeiculos(){
 			 << fixed << setprecision(2) << VectorVeiculos[i].valorPago << '\n';
 		cout << "=============================================\n\n";
 	
-	} 
-
+	}
+	cin.ignore(numeric_limits<streamsize>::max(), '\n');
+	cout << "Pressione ENTER para continuar..." << endl;
+	getline(cin,espera);
 }
 
 void PrintMenu(){
@@ -163,7 +174,10 @@ void PrintMenu(){
 
 int main(){
 	string FileName;
+	
 	int SearchID;
+	
+	int menuOpt = 1;
 	
 	while(menuOpt != 0){
 		
@@ -176,29 +190,37 @@ int main(){
 				cout << "Sair" << endl;
 				break;
 			case 1:
+				//Cadastrar Veículos
 				Cadastro();
 				break;
 			case 2:
+				//Listar Veículos Cadastrados
 				ListarVeiculos();
 				break;
 			case 3:
+				//Buscar Cadastro
 				cout << "Insira o ID do veiculo que esta procurando: ";
 				cin >> SearchID;
 				cout << BuscadorVeiculos(VectorVeiculos, VectorVeiculos.size(), SearchID);
 				SearchID = 0;
 				break;
 			case 4:
+				//Editar Cadastro
 				cout << "Editar Cadastro" << endl;
 				break;
 			case 5:
+				//Remover Cadastro
 				cout << "Remover Cadastro" << endl;
 				break;
 			case 6:
-				
+				//Importar Arquivos
+				cin.ignore(numeric_limits<streamsize>::max(), '\n');
+				cout << "Escreva o nome do arquivo a ser lido: ";
 				getline(cin, FileName);
 				ImportarArquivo(FileName);
 				break;
 			case 7:
+				//Exportar Arquivos
 				ExportarVeiculos();
 				break;
 			default:
