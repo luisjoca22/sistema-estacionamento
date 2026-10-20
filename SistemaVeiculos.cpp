@@ -13,7 +13,46 @@ struct Veiculo{
 	int numeroTicket;
 	string placa;
 	string modelo;
-	string dono;
+
+		PrintMenu();
+		
+		cin >> menuOpt;
+		
+		switch(menuOpt){
+			case 0:
+				cout << "Sair" << endl;
+				break;
+			case 1:
+				Cadastro();
+				break;
+			case 2:
+				ListarVeiculos();
+				break;
+			case 3:
+				cout << "Insira o ID do veiculo que esta procurando: ";
+				cin >> SearchID;
+				cout << BuscadorVeiculos(VectorVeiculos, VectorVeiculos.size(), SearchID);
+				SearchID = 0;
+				break;
+			case 4:
+				cout << "Editar Cadastro" << endl;
+				break;
+			case 5:
+				cout << "Remover Cadastro" << endl;
+				break;
+			case 6:
+				
+				getline(cin, FileName);
+				ImportarArquivo(FileName);
+				break;
+			case 7:
+				ExportarVeiculos();
+				break;
+			default:
+				cout << "Opcao Invalida" << endl;
+		}
+	}
+}	string dono;
 	string tipo;
 	string horarioEntrada;
 	string horarioSaida;
@@ -22,17 +61,12 @@ struct Veiculo{
 
 vector <Veiculo> VectorVeiculos;
 
-string GeradorID() {
+int GeradorID() {
     static int contador = 0;
-    contador++;
-
-    stringstream ss;
-    ss << setfill('0') << setw(4) << contador;
-
-    return ss.str();
+    return ++contador;
 }
 
-void ImportarArquivo(string nome, vector<Veiculo>& VectorVeiculos) {
+void ImportarArquivo(string nome) {
     ifstream entrada(nome);
 
     if (!entrada.is_open()) {
@@ -53,6 +87,7 @@ void ImportarArquivo(string nome, vector<Veiculo>& VectorVeiculos) {
 
         VectorVeiculos.push_back(veiculo);
     }
+
     entrada.close();
 }
 
@@ -70,14 +105,72 @@ void ExportarVeiculos(){
 		//saida << VectorVeiculos[i].valorPago << '\n';
 	}
 	cout << "Arquivo ListaDeVeiculos.txt criado!" << endl;
+
 }
 
-void BuscadorVeiculos(vector <int> VETOR, int tamanho, valor){
+
+int BuscadorVeiculos(vector <Veiculo> vetor, int tamanho, int valor){
 	int inicio = 0;
 	int fim = tamanho - 1;
-
-
+	int resultado = 0;
+	
+	for(int i = 0; i < tamanho; tamanho++){
+		int meio 
+		PrintMenu();
+		
+		cin >> menuOpt;
+		
+		switch(menuOpt){
+			case 0:
+				cout << "Sair" << endl;
+				break;
+			case 1:
+				Cadastro();
+				break;
+			case 2:
+				ListarVeiculos();
+				break;
+			case 3:
+				cout << "Insira o ID do veiculo que esta procurando: ";
+				cin >> SearchID;
+				cout << BuscadorVeiculos(VectorVeiculos, VectorVeiculos.size(), SearchID);
+				SearchID = 0;
+				break;
+			case 4:
+				cout << "Editar Cadastro" << endl;
+				break;
+			case 5:
+				cout << "Remover Cadastro" << endl;
+				break;
+			case 6:
+				
+				getline(cin, FileName);
+				ImportarArquivo(FileName);
+				break;
+			case 7:
+				ExportarVeiculos();
+				break;
+			default:
+				cout << "Opcao Invalida" << endl;
+		}
+	}
+}= (inicio + fim) / 2;
+		if(vetor[meio].numeroTicket == valor){
+			resultado = meio;
+			break;
+		}
+		else if(vetor[meio].numeroTicket < valor){
+			inicio = meio + 1;
+		}
+		else{
+			fim = meio - 1;
+		}
+	}
+	
+	return resultado;
 }
+
+
 
 void Cadastro(){
 	
@@ -125,29 +218,12 @@ void ListarVeiculos(){
 		cout << setw(20) << "Valor Pago:"        << "R$ "
 			 << fixed << setprecision(2) << VectorVeiculos[i].valorPago << '\n';
 		cout << "=============================================\n\n";
-	}
+	
+	} 
+
 }
 
 void PrintMenu(){
-	cout << " MENU PRINCIPAL\n";
-	cout << "---------------------------------------------------------\n";
-	cout << " [1] Cadastrar veiculo\n";
-	cout << " [2] Listar veiculos\n";
-	cout << " [3] Buscar veiculo\n";
-	cout << " [4] Editar cadastro\n";
-	cout << " [5] Remover cadastro\n";
-	cout << " [6] Importar arquivo\n";
-	cout << " [7] Exportar arquivo\n";
-	cout << " [0] Sair\n";
-	cout << "=========================================================\n";
-	cout << " Opcao: ";
-}
-
-int main(){
-	
-	
-	while(menuOpt != 0){
-		
 		PrintMenu();
 		
 		cin >> menuOpt;
@@ -163,7 +239,10 @@ int main(){
 				ListarVeiculos();
 				break;
 			case 3:
-				cout << "Buscar veículos" << endl;
+				cout << "Insira o ID do veiculo que esta procurando: ";
+				cin >> SearchID;
+				cout << BuscadorVeiculos(VectorVeiculos, VectorVeiculos.size(), SearchID);
+				SearchID = 0;
 				break;
 			case 4:
 				cout << "Editar Cadastro" << endl;
@@ -172,9 +251,76 @@ int main(){
 				cout << "Remover Cadastro" << endl;
 				break;
 			case 6:
-				cout << "Importar Arquivo" << endl;
+				getline(cin, FileName);
+				ImportarArquivo(FileName);
 				break;
 			case 7:
+				ExportarVeiculos();
+				break;
+			default:
+				cout << "Opcao Invalida" << endl;
+		}
+	}
+}
+	cout << " MENU PRINCIPAL\n";
+	cout << "---------------------------------------------------------\n";
+	cout << " [1] Cadastrar veiculo\n";
+	cout << " [2] Listar veiculos\n";
+	cout << " [3] Buscar veiculo\n";
+	cout << " [4] Editar cadastro\n";
+	cout << " [5] Remover cadastro\n";
+	cout << " [6] Importar arquivo\n";
+	cout << " [7] Exportar arquivo\n";
+	cout << " [0] Sair\n";
+	cout << "=========================================================\n";
+	cout << " Opcao: ";
+}
+
+int main(){
+	string FileName;
+	int SearchID;
+	
+	while(menuOpt != 0){
+		
+		PrintMenu();
+		
+		cin >> menuOpt;
+		
+		switch(menuOpt){
+			case 0:
+				//Sair do programa
+				cout << "Sair" << endl;
+				break;
+			case 1:
+				//Cadastro de veículo
+				Cadastro();
+				break;
+			case 2:
+				//Listagem de veículo			
+				ListarVeiculos();
+				break;
+			case 3:
+				//Busca de Veículos
+				cout << "Insira o ID do veiculo que esta procurando: ";
+				cin >> SearchID;
+				cout << BuscadorVeiculos(VectorVeiculos, VectorVeiculos.size(), SearchID);
+				SearchID = 0;
+				break;
+			case 4:
+				//Editar Cadastro
+				cout << "Editar Cadastro" << endl;
+				break;
+			case 5:
+				//Remover Cadastro
+				cout << "Remover Cadastro" << endl;
+				break;
+			case 6:
+				//Importar Arquivo
+				getline(cin, FileName);
+				ImportarArquivo(FileName);
+				break;
+			case 7:
+				//Exportar Arquivo
 				ExportarVeiculos();
 				break;
 			default:
